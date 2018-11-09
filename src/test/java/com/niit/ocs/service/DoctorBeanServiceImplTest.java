@@ -34,6 +34,12 @@ public class DoctorBeanServiceImplTest {
 		String name="Bhanu";
 		boolean result=doctorBeanService.checkValidName(name);
 		assertTrue(result);
+		
+		name="bhanu";
+		result=doctorBeanService.checkValidName(name);
+		assertFalse(result);
+		
+		
 	}
 
 	@Test
@@ -41,6 +47,11 @@ public class DoctorBeanServiceImplTest {
 		String pincode="023454";
 		boolean result=doctorBeanService.checkValidPincode(pincode);
 		assertFalse(result);
+		
+		pincode="123454";
+		result=doctorBeanService.checkValidPincode(pincode);
+		assertTrue(result);
+		
 	}
 
 	@Test
@@ -48,6 +59,11 @@ public class DoctorBeanServiceImplTest {
 		String mobileNo="8374292033";
 		boolean result=doctorBeanService.checkValidMobileNo(mobileNo);
 		assertTrue(result);
+		
+		mobileNo="3374292033";
+		result=doctorBeanService.checkValidMobileNo(mobileNo);
+		assertFalse(result);
+		
 	}
 
 	@Test
@@ -55,20 +71,34 @@ public class DoctorBeanServiceImplTest {
 		String emailID="bhanu29k@gmail.com";
 		boolean result=doctorBeanService.checkValidEmailID(emailID);
 		assertTrue(result);
+		
+		emailID="Bhanu29k@gmail.com";
+		result=doctorBeanService.checkValidEmailID(emailID);
+		assertFalse(result);
+		
 	}
 
 	@Test
 	public void testCheckValidDateOfBirth() {
 		String dateOfBirth="1956-06-23";
 		boolean result=doctorBeanService.checkValidDateOfBirth(dateOfBirth);
-		assertTrue(result); 
+		assertTrue(result);
+		
+		dateOfBirth="1956-23-07";
+		result=doctorBeanService.checkValidDateOfBirth(dateOfBirth);
+		assertFalse(result);
+		
 	}
 
 	@Test
 	public void testCheckValidDateOfJoining() {
 		String dateOfJoining="1976-06-23";
-		boolean result=doctorBeanService.checkValidDateOfBirth(dateOfJoining);
-		assertTrue(result); 
+		boolean result=doctorBeanService.checkValidDateOfJoining(dateOfJoining);
+		assertTrue(result);
+		
+		dateOfJoining="1976-13-23";
+		result=doctorBeanService.checkValidDateOfJoining(dateOfJoining);
+		assertFalse(result);
 	}
 
 	@Test

@@ -6,11 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Logger;
+
 import com.niit.ocs.bean.ProfileBean;
 import com.niit.ocs.dao.ProfileDao;
 import com.niit.ocs.util.impl.DBUtilImpl;
 
 public class ProfileDaoImpl implements ProfileDao {
+	static Logger loggr=Logger.getLogger(ProfileDaoImpl.class);
 	static Connection cnn;
 	static Statement stmt;
 	static ResultSet rs;
@@ -18,7 +21,7 @@ public class ProfileDaoImpl implements ProfileDao {
 	static PreparedStatement pstmt1;
 	@Override
 	public String createProfile(ProfileBean profileBean) {
-		
+		loggr.info("createProfile is working");
 		try
 		{
 			cnn=DBUtilImpl.getDBConnection("jdbc");

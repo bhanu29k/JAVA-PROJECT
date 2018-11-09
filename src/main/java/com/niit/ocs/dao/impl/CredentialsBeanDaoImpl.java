@@ -7,13 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Logger;
+
 import com.niit.ocs.bean.CredentialsBean;
 
 import com.niit.ocs.dao.CredentialsBeanDao;
 import com.niit.ocs.util.impl.DBUtilImpl;
 
 public class CredentialsBeanDaoImpl implements CredentialsBeanDao {
-
+	static Logger loggr=Logger.getLogger(CredentialsBeanDaoImpl.class);
 	static Connection cnn;
 	static Statement stmt;
 	static ResultSet rs;
@@ -23,6 +25,7 @@ public class CredentialsBeanDaoImpl implements CredentialsBeanDao {
 	//ConnectWithDatabaseDao connectWithDatabase=new  ConnectWithDatabaseDaoImpl(); 
 	
 	public CredentialsBean findByID(String str) {
+		loggr.info("findByID is working");
 		try {
 			
 			// Class.forName("com.mysql.cj.jdbc.Driver");
@@ -55,6 +58,7 @@ public class CredentialsBeanDaoImpl implements CredentialsBeanDao {
 	}
 	
 	public boolean updateCredentialBeanDao(CredentialsBean credentialsBean) {
+		loggr.info("updateCredentialBeanDao is working");
 		try {
 			cnn=DBUtilImpl.getDBConnection("jdbc");
 			stmt=cnn.createStatement();

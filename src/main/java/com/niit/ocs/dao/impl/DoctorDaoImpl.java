@@ -8,7 +8,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
+
+import org.apache.log4j.Logger;
 
 import com.niit.ocs.bean.CredentialsBean;
 import com.niit.ocs.bean.DoctorBean;
@@ -17,7 +20,7 @@ import com.niit.ocs.util.impl.DBUtilImpl;
 
 
 public class DoctorDaoImpl implements DoctorDao {
-
+	static Logger loggr=Logger.getLogger(DoctorDaoImpl.class);
 	/* (non-Javadoc)
 	 * @see com.niit.ocs.dao.DoctorDao#createDoctor(com.niit.ocs.bean.DoctorBean)
 	 */
@@ -30,8 +33,7 @@ public class DoctorDaoImpl implements DoctorDao {
 	
 	
 	public String createDoctor(DoctorBean doctorBean) {
-		
-
+		loggr.info("createDoctor is working");
 		try {
 		cnn=DBUtilImpl.getDBConnection("jdbc");
 		String query="insert into ocs_tbl_doctor(doctorid,doctorname,dateofbirth,dateofjoining,gender,qualification,specialization,yearsofexperience,street,location,city,state,pincode,contactnumber,emailid) "+" values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -47,7 +49,6 @@ public class DoctorDaoImpl implements DoctorDao {
 		pstmt.setString(9,doctorBean.getStreet());
 		pstmt.setString(10,doctorBean.getLocation());
 		pstmt.setString(11,doctorBean.getCity());	
-		
 		pstmt.setString(12,doctorBean.getState());
 		pstmt.setString(13,doctorBean.getPincode());
 		pstmt.setString(14,doctorBean.getContactNumber());
@@ -60,18 +61,15 @@ public class DoctorDaoImpl implements DoctorDao {
 		catch(SQLException s)
 		   {
 			   System.out.println("SQL Exception in DoctorDaoImpl  create doctor"+s);
-			   return "FAIL";
+			   return "fail";
 		   }
 
 	}
 
-
-
 	public DoctorBean findByID(String str) {
+		loggr.info("findByID is working");
 		try {
-			
 			// Class.forName("com.mysql.cj.jdbc.Driver");
-
 		      //System.out.println("Connecting to database...");
 		      //cnn = DriverManager.getConnection("jdbc:mysql://localhost/ocs","root","root");
 		  //  cnn=connectWithDatabase.getConnection("jdbc");
@@ -110,13 +108,10 @@ public class DoctorDaoImpl implements DoctorDao {
 			  // return null;
 		   }
 		return null;
-
 	}
 
-
-
 	public boolean updateDoctor(DoctorBean db) {
-		
+		loggr.info("updateDoctor is working");
 		try {
 			cnn=DBUtilImpl.getDBConnection("jdbc");
 			stmt=cnn.createStatement();
@@ -126,17 +121,13 @@ public class DoctorDaoImpl implements DoctorDao {
 		{
 			System.out.println("Exception in Doctor dao update "+s);
 			return false;
-		}
-		
+		}		
 		return true;
 	}
 
-
-
 	@Override
 	public ArrayList<DoctorBean> findAll() {
-
-		
+		loggr.info("findAll is working");
 		try {
 			ArrayList<DoctorBean> doctor=new ArrayList<DoctorBean>();
 			cnn=DBUtilImpl.getDBConnection("jdbc");
@@ -164,6 +155,7 @@ public class DoctorDaoImpl implements DoctorDao {
 
 	@Override
 	public int deleteDoctor(ArrayList<String> al) {
+		loggr.info("deleteDoctor is working");
 		try {
 			cnn=DBUtilImpl.getDBConnection("jdbc");
 			for(String i:al)
@@ -179,5 +171,38 @@ public class DoctorDaoImpl implements DoctorDao {
 		}
 		
 	}
+
+
+
+	@Override
+	public ArrayList<DoctorBean> findByPatientIdAndAppointDate(String pid, LocalDate appointDate) {
+		loggr.info("findByPatientIdAndAppointDate is working");
+		try {
+			ArrayList<DoctorBean> doctor=new ArrayList<DoctorBean>();
+			cnn=DBUtilImpl.getDBConnection("jdbc");
+			pstmt=cnn.prepareStatement("select ocs_tbl_doctor.* from ocs_tbl_doctor left join  ocs_tbl_leave on  ocs_tbl_leave.doctorid=ocs_tbl_doctor.doctorid left join ocs_tbl_patient on ocs_tbl_doctor.specialization=ocs_tbl_patient.ailment_type where (leave_to is null or cast('"+appointDate+"' as date) not  between leave_from and leave_to) and ocs_tbl_patient.patientid='"+pid+"'");
+			//System.out.println("select ocs_tbl_doctor.* from ocs_tbl_doctor left join  ocs_tbl_leave on  ocs_tbl_leave.doctorid=ocs_tbl_doctor.doctorid where (leave_to is null or cast('"+dateAppoint+"' as date) not  between leave_from and leave_to) and specialization='"+special+"'");
+			rs=pstmt.executeQuery();
+			while(rs.next())
+			{
+				DoctorBean doctorBean=new DoctorBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),rs.getString(14),rs.getString(15));
+				doctor.add(doctorBean);
+			}
+			if(rs.first())
+			{
+				return doctor;
+			}
+		}
+		catch(SQLException s)
+		{
+			System.out.println("Exception in reporter Dao find doctorBY date"+s);
+			
+			
+		}
+		return null;
+
+	}
+	
+	
 
 }

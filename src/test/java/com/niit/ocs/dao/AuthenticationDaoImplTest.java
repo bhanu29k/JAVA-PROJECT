@@ -33,10 +33,13 @@ public class AuthenticationDaoImplTest {
 
 	@Test
 	public void testAuthenticateDb() {
-		credentialsBean=new CredentialsBean("72053","Bhanu@1234");
+		
+		credentialsBean=new CredentialsBean("72053","Bhanu@123");
 		boolean result=authenticationDao.authenticateDb(credentialsBean);
 		assertTrue(result);
-		
+		credentialsBean=new CredentialsBean("72053","Bhanu@1234");
+		result=authenticationDao.authenticateDb(credentialsBean);
+		assertFalse(result);
 	}
 
 	@Test
@@ -44,6 +47,16 @@ public class AuthenticationDaoImplTest {
 		String id="72053";
 		String result=authenticationDao.authorizeDb(id);
 		assertEquals(result,"A");
+		id="Go4741";
+		result=authenticationDao.authorizeDb(id);
+		assertEquals(result,"P");
+		id="11111";
+		result=authenticationDao.authorizeDb(id);
+		assertEquals(result,"R");
+		id="72054";
+		result=authenticationDao.authorizeDb(id);
+		assertEquals(result,"");
+		
 	}
 
 	@Test
@@ -51,6 +64,10 @@ public class AuthenticationDaoImplTest {
 		credentialsBean=new CredentialsBean("72053","Bhanu@1234");
 		int loginStatus=1;
 		boolean result=authenticationDao.changeLoginStatusDb(credentialsBean, loginStatus);
+		assertTrue(result);
+		credentialsBean=new CredentialsBean("72053","Bhanu@1234");
+		loginStatus=1;
+		result=authenticationDao.changeLoginStatusDb(credentialsBean, loginStatus);
 		assertTrue(result);
 		
 		

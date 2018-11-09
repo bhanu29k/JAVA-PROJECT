@@ -2,6 +2,8 @@ package com.niit.ocs.util.impl;
 
 
 
+import org.apache.log4j.Logger;
+
 import com.niit.ocs.bean.CredentialsBean;
 import com.niit.ocs.bean.ProfileBean;
 import com.niit.ocs.dao.CredentialsBeanDao;
@@ -12,7 +14,7 @@ import com.niit.ocs.util.Authentication;
 import com.niit.ocs.util.User;
 
 public class UserImpl implements User {
-    
+	static Logger loggr=Logger.getLogger(UserImpl.class);
 	ProfileDao profileDao;
 	/**
 	 * @param profileDao
@@ -32,6 +34,7 @@ public class UserImpl implements User {
 		profileDao=new ProfileDaoImpl();
 	}
 	
+	
 	/**
 	 * @param authenticationObj
 	 */
@@ -44,7 +47,7 @@ public class UserImpl implements User {
 
 	public String login(CredentialsBean credentialsBean) {
 		
-		
+		loggr.info("login is working");
 		if(authenticationObj.authenticate(credentialsBean))
 		{
 			
@@ -61,7 +64,7 @@ public class UserImpl implements User {
 	
 	public boolean logout(String userId) {
 		
-		
+		loggr.info("logout is working");
 		
 		CredentialsBean credentialsBean=credentialsBeanDao.findByID(userId);
 		return authenticationObj.changeLoginStatus( credentialsBean ,1);
@@ -71,6 +74,7 @@ public class UserImpl implements User {
 
 	
 	public String changePassword(CredentialsBean credentialsBean, String str) {
+		loggr.info("changepassword is working");
 		//credentialsBeanDao=new CredentialsBeanDaoImpl();
 		if(credentialsBeanDao.updateCredentialBeanDao(credentialsBean))
 		return "Successfull password changed";
@@ -79,7 +83,7 @@ public class UserImpl implements User {
 
 
 	public String register(ProfileBean profileBean) {
-		
+		loggr.info("register is working");
 		return profileDao.createProfile(profileBean);
 		
 	}

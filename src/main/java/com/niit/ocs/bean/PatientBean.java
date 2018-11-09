@@ -16,7 +16,7 @@ private String userID;
  * @param ailmentDetails
  * @param diagnosishistory
  */
-public PatientBean(String userID,String patientID, LocalDate appointmentDate, String ailmentType, String ailmentDetails,
+public PatientBean(String patientID,String userID, LocalDate appointmentDate, String ailmentType, String ailmentDetails,
 		String diagnosishistory) {
 	super();
 	this.userID=userID;

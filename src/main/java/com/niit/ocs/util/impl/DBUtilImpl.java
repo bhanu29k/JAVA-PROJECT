@@ -6,13 +6,16 @@ import java.sql.DriverManager;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
+import com.niit.ocs.util.Authentication;
 import com.niit.ocs.util.DBUtil;
 //import java.sql.Statement;
 
 
 
 public class DBUtilImpl implements DBUtil {
-	
+	static Logger loggr=Logger.getLogger(DBUtilImpl.class);
 	static Connection cnn;
 	
 	
@@ -23,7 +26,7 @@ public class DBUtilImpl implements DBUtil {
 		
 	public static Connection getDBConnection(String driverType) {
 		
-		
+		//loggr.info("getDBConnection working");
 		try {
 		
 			 Class.forName(JDBC_DRIVER);
